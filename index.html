@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title></title>
+</head>
+<body>
+<form action="" id="form">
+    <input type="text" name="username" value="oluwaslim" placeholder="username">
+    <br>
+    <input type="password" name="password" value="password" placeholder="password">
+    <br>
+    <input type="checkbox" name="check[]" value="check1" id="ch1">
+    <label for="ch1">check1</label>
+    <input type="checkbox" name="check[]" value="check2" checked="checked" id="ch2">
+    <label for="ch2">check2</label>
+    <br>
+    <select multiple>
+        <option selected value="a">a</option>
+        <option selected value="b">b</option>
+        <option selected value="c">c</option>
+    </select>
+    <br>
+    <button type="submit">Validate</button>
+</form>
+</body>
+<script src="dist/app.js"></script>
+<script
+        src="https://code.jquery.com/jquery-3.2.1.js"
+        integrity="sha256-DZAnKJ/6XZ9si04Hgrsxu/8s717jcIzLy3oi35EouyE="
+        crossorigin="anonymous"></script>
+<script>
+        var form = document.getElementById('form');
+
+        form.addEventListener('submit',function(e)
+        {
+            e.preventDefault();
+
+            var rules = {username: ['required','accepted'],'password': ['required','alpha_num']};
+
+            _w(form,{disabled: true}).validate(rules);
+
+            return false;
+        });
+
+//    var form = $('#form');
+//
+//    form.on('submit',function(e)
+//    {
+//        e.preventDefault();
+//
+//        var rules = {username: ['required','accepted'],'password': ['required','alpha_num']};
+//
+//        _w(form,{disabled: true,empty: true}).validate(rules);
+//
+//        return false;
+//    })
+</script>
+</html>
