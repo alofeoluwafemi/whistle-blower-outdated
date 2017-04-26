@@ -136,7 +136,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
             } else if (type === "[object Object]")            //Instance of Object e.g {}
             {
                 inputs = culprit;
-            } else if (type === "[object HTMLFormElement]")   //Instance of DOM using document.getElement
+            } else if (type === "[object HTMLFormElement]")   //Instance of DOM e.g using document.getElement
             {
                 inputs = __WEBPACK_IMPORTED_MODULE_0_form_serialize___default()(culprit, __WEBPACK_IMPORTED_MODULE_1_underscore___default.a.extend({hash: true}, options));
             } else {
@@ -205,7 +205,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
             }
         });
 
-        console.log(inputs,rules,errors,messages);
+        console.log(errors,messages);
     }
 
     /**
@@ -218,17 +218,16 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
         var value,passed;
 
         //Check if field under validation exist
-        if(!__WEBPACK_IMPORTED_MODULE_1_underscore___default.a.isEmpty(inputs[field]))
-        {
-            value   = inputs[field];
-            passed  = __WEBPACK_IMPORTED_MODULE_2__rules__["a" /* default */][rule].call(_w,value);
+        if(__WEBPACK_IMPORTED_MODULE_1_underscore___default.a.isEmpty(inputs[field])) inputs[field] = "";
 
-            //If Validation fails
-            if(!passed)
-            {
-                applyErrors(field,rule);
-                applyMessages(field,rule);
-            }
+        value   = inputs[field];
+        passed  = __WEBPACK_IMPORTED_MODULE_2__rules__["a" /* default */][rule].call(_w,value);
+
+        //If Validation fails
+        if(!passed)
+        {
+            applyErrors(field,rule);
+            applyMessages(field,rule);
         }
     }
 
@@ -254,11 +253,15 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
      */
     function applyMessages(field,rule)
     {
-        var message     = __WEBPACK_IMPORTED_MODULE_1_underscore___default.a.isEmpty(userMsgs[rule])
-                        ? (__WEBPACK_IMPORTED_MODULE_1_underscore___default.a.isEmpty(__WEBPACK_IMPORTED_MODULE_3__messages__["a" /* default */][rule]) ? rule : __WEBPACK_IMPORTED_MODULE_3__messages__["a" /* default */][rule])
-                        : userMsgs[rule];
+        var msgIdentifier = field + ':' + rule;
 
-        messages[field] = message.replace('{attribute}',field);
+        var message     = __WEBPACK_IMPORTED_MODULE_1_underscore___default.a.isEmpty(userMsgs[msgIdentifier])
+            ? (__WEBPACK_IMPORTED_MODULE_1_underscore___default.a.isEmpty(__WEBPACK_IMPORTED_MODULE_3__messages__["a" /* default */][rule]) ? rule : __WEBPACK_IMPORTED_MODULE_3__messages__["a" /* default */][rule])
+            : userMsgs[msgIdentifier];
+
+        if(!__WEBPACK_IMPORTED_MODULE_1_underscore___default.a.isEmpty(messages[field])) messages[field].push(message.replace('{attribute}',field));
+
+        if(__WEBPACK_IMPORTED_MODULE_1_underscore___default.a.isEmpty(messages[field])) messages[field] = [message.replace('{attribute}',field)];
     }
 
 }.call(window));
@@ -2098,32 +2101,28 @@ var __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;//     Underscor
 
 //  accepted,
 //  alpha,
-//  alpha_space,
-//  equal,
-//  array,
 //  alpha_dash,
-//  contains,
-//  not_equal
-//  confirmed,
-//  date,
+//  alpha_num,
+//  alpha_space,
+//  before,
 //  between,
-//  required,
-//  min,
+//  confirmed,
+//  contains,
+//  date,
+//  email,
+//  equal,
+//  file,
 //  max,
+//  min,
+//  not_equal
 //  numeric,
+//  regex
+//  required,
 //  size,
 //  url,
-//  email,
-//  file,
-//  regex
+
 
 /* harmony default export */ __webpack_exports__["a"] = ({
-    /**
-     * Field under validation must
-     * be yes,on,1 or true
-     *
-     * @param value
-     */
     accepted: function(value)
     {
         value = value.toString();
@@ -2133,20 +2132,34 @@ var __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;//     Underscor
         return found != -1;
     },
 
-    alpha_num: function(value)
+    alpha: function(value)
     {
-        return false;
+        return /^[a-zA-Z]+$/.test(value);
     },
 
-    /**
-     * Validate if string or array
-     * is not empty
-     * @param value
-     * @returns {boolean}
-     */
+    alpha_dash: function(value)
+    {
+        return /^[a-zA-Z\-]+$/.test(value);
+    },
+
+    alpha_num: function(value)
+    {
+        return /^\w+$/.test(value);
+    },
+
+    alpha_space: function(value)
+    {
+        return /^[a-zA-Z\s]+$/.test(value);
+    },
+
     required: function(value)
     {
         return !__WEBPACK_IMPORTED_MODULE_0_underscore___default.a.isEmpty(value);
+    },
+
+    before: function(value)
+    {
+        return false;
     }
 
 });
@@ -2212,11 +2225,13 @@ function convert$ObjAsJson(objects)
 
 "use strict";
 /* harmony default export */ __webpack_exports__["a"] = ({
-    alpha_num   : 'The {attribute} may only contain letters and numbers.',
     accepted    : 'The {attribute} must be accepted',
-    required    : 'The {attribute} field is required',
-    array       : 'The {attribute} must be an array.',
-    alpha_dash  : 'The {attribute} may only contain letters, numbers, and dashes.'
+    alpha       : 'The {attribute} may only contain letters.',
+    alpha_dash  : 'The {attribute} may only contain letters, numbers, and dashes.',
+    alpha_num   : 'The {attribute} may only contain letters and numbers.',
+    alpha_space : 'The {attribute} may only contain letters and spaces.',
+    'before'    : 'The {attribute} must be a date before {date}.',
+    required    : 'The {attribute} field is required'
 });
 
 /***/ })

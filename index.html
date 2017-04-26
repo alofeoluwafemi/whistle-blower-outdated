@@ -6,9 +6,9 @@
 </head>
 <body>
 <form action="" id="form">
-    <input type="text" name="username" value="oluwaslim" placeholder="username">
+    <input type="text" name="username" value="" placeholder="username">
     <br>
-    <input type="password" name="password" value="password" placeholder="password">
+    <input type="password" name="password" value="password_" placeholder="password">
     <br>
     <input type="checkbox" name="check[]" value="check1" id="ch1">
     <label for="ch1">check1</label>
@@ -30,30 +30,33 @@
         integrity="sha256-DZAnKJ/6XZ9si04Hgrsxu/8s717jcIzLy3oi35EouyE="
         crossorigin="anonymous"></script>
 <script>
-        var form = document.getElementById('form');
+    var form = document.getElementById('form');
 
-        form.addEventListener('submit',function(e)
-        {
-            e.preventDefault();
+    form.addEventListener('submit',function(e)
+    {
+        e.preventDefault();
 
-            var rules = {username: ['required','accepted'],'password': ['required','alpha_num']};
+        var rules = {
+            username: ['required','alpha_dash','before:date'],
+            'password': ['required','alpha_num','alpha_space']
+        };
 
-            _w(form,{disabled: true}).validate(rules);
+        _w(form,{disabled: true}).validate(rules);
 
-            return false;
-        });
+        return false;
+    });
 
-//    var form = $('#form');
-//
-//    form.on('submit',function(e)
-//    {
-//        e.preventDefault();
-//
-//        var rules = {username: ['required','accepted'],'password': ['required','alpha_num']};
-//
-//        _w(form,{disabled: true,empty: true}).validate(rules);
-//
-//        return false;
-//    })
+    //    var form = $('#form');
+    //
+    //    form.on('submit',function(e)
+    //    {
+    //        e.preventDefault();
+    //
+    //        var rules = {username: ['required','accepted'],'password': ['required','alpha_num']};
+    //
+    //        _w(form,{disabled: true,empty: true}).validate(rules);
+    //
+    //        return false;
+    //    })
 </script>
 </html>

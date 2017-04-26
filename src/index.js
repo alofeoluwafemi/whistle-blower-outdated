@@ -55,7 +55,7 @@ import {convert$ObjAsJson} from "./helper"
             } else if (type === "[object Object]")            //Instance of Object e.g {}
             {
                 inputs = culprit;
-            } else if (type === "[object HTMLFormElement]")   //Instance of DOM using document.getElement
+            } else if (type === "[object HTMLFormElement]")   //Instance of DOM e.g using document.getElement
             {
                 inputs = serialize(culprit, _.extend({hash: true}, options));
             } else {
@@ -124,7 +124,7 @@ import {convert$ObjAsJson} from "./helper"
             }
         });
 
-        console.log(inputs,rules,errors,messages);
+        console.log(errors,messages);
     }
 
     /**
@@ -137,9 +137,13 @@ import {convert$ObjAsJson} from "./helper"
         var value,passed;
 
         //Check if field under validation exist
-        if(!_.isEmpty(inputs[field]))
+        if(_.isEmpty(inputs[field])) inputs[field] = "";
+
+        value   = inputs[field];
+
+        if(!_.isEmpty(rules[rule]))
         {
-            value   = inputs[field];
+            //If rule has param
             passed  = rules[rule].call(_w,value);
 
             //If Validation fails
@@ -149,6 +153,8 @@ import {convert$ObjAsJson} from "./helper"
                 applyMessages(field,rule);
             }
         }
+
+        console.info('#worried# No such rule as ',rule);
     }
 
     /**
@@ -173,11 +179,17 @@ import {convert$ObjAsJson} from "./helper"
      */
     function applyMessages(field,rule)
     {
-        var message     = _.isEmpty(userMsgs[rule])
-                        ? (_.isEmpty(validationMsgs[rule]) ? rule : validationMsgs[rule])
-                        : userMsgs[rule];
+        var msgIdentifier = field + ':' + rule;
 
-        messages[field] = message.replace('{attribute}',field);
+        var message     = _.isEmpty(userMsgs[msgIdentifier])
+            ? (_.isEmpty(validationMsgs[rule]) ? rule : validationMsgs[rule])
+            : userMsgs[msgIdentifier];
+
+        console.log(message);
+
+        if(!_.isEmpty(messages[field])) messages[field].push(message.replace('{attribute}',field));
+
+        if(_.isEmpty(messages[field])) messages[field] = [message.replace('{attribute}',field)];
     }
 
 }.call(window));

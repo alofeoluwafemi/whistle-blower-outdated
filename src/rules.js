@@ -5,33 +5,29 @@ import _ from "underscore";
 
 //  accepted,
 //  alpha,
-//  alpha_space,
-//  equal,
-//  array,
 //  alpha_dash,
-//  contains,
-//  not_equal
-//  confirmed,
-//  date,
+//  alpha_num,
+//  alpha_space,
+//  before,
 //  between,
-//  required,
-//  min,
+//  confirmed,
+//  contains,
+//  date,
+//  email,
+//  equal,
+//  file,
 //  max,
+//  min,
+//  not_equal
 //  numeric,
+//  regex
+//  required,
 //  size,
 //  url,
-//  email,
-//  file,
-//  regex
+
 
 export default
 {
-    /**
-     * Field under validation must
-     * be yes,on,1 or true
-     *
-     * @param value
-     */
     accepted: function(value)
     {
         value = value.toString();
@@ -41,20 +37,34 @@ export default
         return found != -1;
     },
 
-    alpha_num: function(value)
+    alpha: function(value)
     {
-        return false;
+        return /^[a-zA-Z]+$/.test(value);
     },
 
-    /**
-     * Validate if string or array
-     * is not empty
-     * @param value
-     * @returns {boolean}
-     */
+    alpha_dash: function(value)
+    {
+        return /^[a-zA-Z\-]+$/.test(value);
+    },
+
+    alpha_num: function(value)
+    {
+        return /^\w+$/.test(value);
+    },
+
+    alpha_space: function(value)
+    {
+        return /^[a-zA-Z\s]+$/.test(value);
+    },
+
     required: function(value)
     {
         return !_.isEmpty(value);
+    },
+
+    before: function(value,date)
+    {
+        return false;
     }
 
 };
