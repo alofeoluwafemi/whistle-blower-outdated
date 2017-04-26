@@ -6,7 +6,7 @@
 </head>
 <body>
 <form action="" id="form">
-    <input type="text" name="username" value="" placeholder="username">
+    <input type="text" name="username" value="oluwaslim" placeholder="username">
     <br>
     <input type="password" name="password" value="password_" placeholder="password">
     <br>
@@ -37,9 +37,11 @@
         e.preventDefault();
 
         var rules = {
-            username: ['required','alpha_dash','before:date'],
-            'password': ['required','alpha_num','alpha_space']
+            username: ['required','before:9234561'],
+            password: ['required']
         };
+
+//        var messages = {'username:required': 'Is a required field'};
 
         _w(form,{disabled: true}).validate(rules);
 

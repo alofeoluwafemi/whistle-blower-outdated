@@ -43,16 +43,15 @@ function deduceOriginalRule(rule)
     return rule.split(':')[0];
 }
 
-function agregrateRulesAndParams(field,rule)
+function aggregateRulesAndParams(rule)
 {
-    //if(isUndefined(rule) || isUndefined(field)) return [];
+    if(isUndefined(rule)) return [];
 
     var params = rule.split(':');
 
     params.shift();
-    params.unshift(field);
 
-    return params.join(', ');
+    return params;
 }
 
-export {convert$ObjAsJson};
+export {convert$ObjAsJson,deduceOriginalRule,aggregateRulesAndParams};

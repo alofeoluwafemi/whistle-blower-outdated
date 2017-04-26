@@ -1770,21 +1770,26 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
      */
     function performValidation(rule,field)
     {
-        var value,passed;
+        var value,passed,computed,params;
 
         //Check if field under validation exist
         if(__WEBPACK_IMPORTED_MODULE_1_underscore___default.a.isUndefined(inputs[field])) inputs[field] = "";
 
-        value   = inputs[field];
+        value       = inputs[field];
+        computed    = __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_4__helper__["b" /* deduceOriginalRule */])(rule);
+        params      = __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_4__helper__["c" /* aggregateRulesAndParams */])(rule);
 
-        if(!__WEBPACK_IMPORTED_MODULE_1_underscore___default.a.isUndefined(__WEBPACK_IMPORTED_MODULE_2__rules__["a" /* default */][rule]))
+        if(!__WEBPACK_IMPORTED_MODULE_1_underscore___default.a.isUndefined(__WEBPACK_IMPORTED_MODULE_2__rules__["a" /* default */][computed]))
         {
+            params.unshift(value);
+
             //If rule has param
-            passed = __WEBPACK_IMPORTED_MODULE_2__rules__["a" /* default */][rule].call(_w, value);
+            passed = __WEBPACK_IMPORTED_MODULE_2__rules__["a" /* default */][computed].apply(_w, params);
 
             //If Validation fails
-            if (!passed) {
-                applyErrors(field, rule);
+            if (!passed)
+            {
+                applyErrors(field, computed);
                 applyMessages(field, rule);
             }
         }else
@@ -1815,17 +1820,30 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
      */
     function applyMessages(field,rule)
     {
-        var msgIdentifier = field + ':' + rule;
+        var computed,params,msgIdentifier,message,param;
 
-        var message     = __WEBPACK_IMPORTED_MODULE_1_underscore___default.a.isEmpty(userMsgs[msgIdentifier])
-            ? (__WEBPACK_IMPORTED_MODULE_1_underscore___default.a.isEmpty(__WEBPACK_IMPORTED_MODULE_3__messages__["a" /* default */][rule]) ? rule : __WEBPACK_IMPORTED_MODULE_3__messages__["a" /* default */][rule])
+        computed    = __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_4__helper__["b" /* deduceOriginalRule */])(rule);
+        params      = __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_4__helper__["c" /* aggregateRulesAndParams */])(rule);
+
+        //Append field to message
+        params.unshift(field);
+
+        msgIdentifier = field + ':' + computed;
+
+        message     = __WEBPACK_IMPORTED_MODULE_1_underscore___default.a.isEmpty(userMsgs[msgIdentifier])
+            ? (__WEBPACK_IMPORTED_MODULE_1_underscore___default.a.isEmpty(__WEBPACK_IMPORTED_MODULE_3__messages__["a" /* default */][computed]) ? computed : __WEBPACK_IMPORTED_MODULE_3__messages__["a" /* default */][computed])
             : userMsgs[msgIdentifier];
 
-        console.log(message);
+        //Substitute place holders in error messages
+        //with actual values
+        for(param in params)
+        {
+            message = message.replace(/({[a-z]+})/,params[param]);
+        }
 
-        if(!__WEBPACK_IMPORTED_MODULE_1_underscore___default.a.isEmpty(messages[field])) messages[field].push(message.replace('{attribute}',field));
+        if(!__WEBPACK_IMPORTED_MODULE_1_underscore___default.a.isEmpty(messages[field])) messages[field].push(message);
 
-        if(__WEBPACK_IMPORTED_MODULE_1_underscore___default.a.isEmpty(messages[field])) messages[field] = [message.replace('{attribute}',field)];
+        if(__WEBPACK_IMPORTED_MODULE_1_underscore___default.a.isEmpty(messages[field])) messages[field] = [message];
     }
 
 }.call(window));
@@ -2104,6 +2122,8 @@ module.exports = serialize;
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_underscore__ = __webpack_require__(0);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_underscore___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0_underscore__);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return convert$ObjAsJson; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "b", function() { return deduceOriginalRule; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "c", function() { return aggregateRulesAndParams; });
 
 
 //Utility functions
@@ -2149,16 +2169,15 @@ function deduceOriginalRule(rule)
     return rule.split(':')[0];
 }
 
-function agregrateRulesAndParams(field,rule)
+function aggregateRulesAndParams(rule)
 {
-    //if(isUndefined(rule) || isUndefined(field)) return [];
+    if(__webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0_underscore__["isUndefined"])(rule)) return [];
 
     var params = rule.split(':');
 
     params.shift();
-    params.unshift(field);
 
-    return params.join(', ');
+    return params;
 }
 
 

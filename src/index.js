@@ -7,7 +7,7 @@ import serialize from "form-serialize";
 import _ from "underscore";
 import rules from "./rules";
 import validationMsgs from "./messages";
-import {convert$ObjAsJson} from "./helper"
+import {convert$ObjAsJson,deduceOriginalRule,aggregateRulesAndParams} from "./helper"
 
 (function()
 {
@@ -134,21 +134,26 @@ import {convert$ObjAsJson} from "./helper"
      */
     function performValidation(rule,field)
     {
-        var value,passed;
+        var value,passed,computed,params;
 
         //Check if field under validation exist
         if(_.isUndefined(inputs[field])) inputs[field] = "";
 
-        value   = inputs[field];
+        value       = inputs[field];
+        computed    = deduceOriginalRule(rule);
+        params      = aggregateRulesAndParams(rule);
 
-        if(!_.isUndefined(rules[rule]))
+        if(!_.isUndefined(rules[computed]))
         {
+            params.unshift(value);
+
             //If rule has param
-            passed = rules[rule].call(_w, value);
+            passed = rules[computed].apply(_w, params);
 
             //If Validation fails
-            if (!passed) {
-                applyErrors(field, rule);
+            if (!passed)
+            {
+                applyErrors(field, computed);
                 applyMessages(field, rule);
             }
         }else
@@ -179,17 +184,30 @@ import {convert$ObjAsJson} from "./helper"
      */
     function applyMessages(field,rule)
     {
-        var msgIdentifier = field + ':' + rule;
+        var computed,params,msgIdentifier,message,param;
 
-        var message     = _.isEmpty(userMsgs[msgIdentifier])
-            ? (_.isEmpty(validationMsgs[rule]) ? rule : validationMsgs[rule])
+        computed    = deduceOriginalRule(rule);
+        params      = aggregateRulesAndParams(rule);
+
+        //Append field to message
+        params.unshift(field);
+
+        msgIdentifier = field + ':' + computed;
+
+        message     = _.isEmpty(userMsgs[msgIdentifier])
+            ? (_.isEmpty(validationMsgs[computed]) ? computed : validationMsgs[computed])
             : userMsgs[msgIdentifier];
 
-        console.log(message);
+        //Substitute place holders in error messages
+        //with actual values
+        for(param in params)
+        {
+            message = message.replace(/({[a-z]+})/,params[param]);
+        }
 
-        if(!_.isEmpty(messages[field])) messages[field].push(message.replace('{attribute}',field));
+        if(!_.isEmpty(messages[field])) messages[field].push(message);
 
-        if(_.isEmpty(messages[field])) messages[field] = [message.replace('{attribute}',field)];
+        if(_.isEmpty(messages[field])) messages[field] = [message];
     }
 
 }.call(window));

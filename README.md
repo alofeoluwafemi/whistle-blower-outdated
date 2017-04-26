@@ -71,8 +71,8 @@ var form = document.getElementById('form');
     {
         e.preventDefault();
         var rules = {
-            username: ['required','alpha_dash','before:date'],
-            'password': ['required','alpha_num','alpha_space']
+            username: ['required','alpha_dash','before:2017-02-17'],
+            password: ['required','alpha_num','alpha_space']
         };
         _w(form,{disabled: true}).validate(rules);
         return false;
