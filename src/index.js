@@ -137,24 +137,24 @@ import {convert$ObjAsJson} from "./helper"
         var value,passed;
 
         //Check if field under validation exist
-        if(_.isEmpty(inputs[field])) inputs[field] = "";
+        if(_.isUndefined(inputs[field])) inputs[field] = "";
 
         value   = inputs[field];
 
-        if(!_.isEmpty(rules[rule]))
+        if(!_.isUndefined(rules[rule]))
         {
             //If rule has param
-            passed  = rules[rule].call(_w,value);
+            passed = rules[rule].call(_w, value);
 
             //If Validation fails
-            if(!passed)
-            {
-                applyErrors(field,rule);
-                applyMessages(field,rule);
+            if (!passed) {
+                applyErrors(field, rule);
+                applyMessages(field, rule);
             }
+        }else
+        {
+            console.info('#worried# No such rule as ',rule);
         }
-
-        console.info('#worried# No such rule as ',rule);
     }
 
     /**

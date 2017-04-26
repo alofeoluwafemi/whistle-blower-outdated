@@ -1,4 +1,4 @@
-import {each,isArray,isUndefined,every} from "underscore";
+import {each,isArray,isUndefined,every,isEmpty,isUndefined} from "underscore";
 
 //Utility functions
 
@@ -35,5 +35,24 @@ function convert$ObjAsJson(objects)
     return json;
 }
 
+
+function deduceOriginalRule(rule)
+{
+    if(isUndefined(rule)) return rule;
+
+    return rule.split(':')[0];
+}
+
+function agregrateRulesAndParams(field,rule)
+{
+    //if(isUndefined(rule) || isUndefined(field)) return [];
+
+    var params = rule.split(':');
+
+    params.shift();
+    params.unshift(field);
+
+    return params.join(', ');
+}
 
 export {convert$ObjAsJson};
