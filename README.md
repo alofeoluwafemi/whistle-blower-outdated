@@ -1,13 +1,13 @@
-#Whistle-Blower.js
+# Whistle-Blower.js
 
-##A Simple Javascript Validation Library
+## A Simple Javascript Validation Library
 
-###Installation
+### Installation
 ```
 npm install --
 ```
 
-###Available rules
+### Available rules
 - accepted,
 - alpha,
 - alpha_dash,
@@ -30,7 +30,7 @@ npm install --
 - size,
 - url,
 
-###Available Options
+### Available Options
 
 <table>
     <thead>
@@ -55,14 +55,15 @@ npm install --
     </tbody>
 </table>
 
-###Basic Usage
+### Basic Usage
+
 ```javascript
 _w(form,options).validate(rules,messages);
 ```
 
-###Example Usage
+### Example Usage
  
-####Basic Usage
+#### Example I
 
 ```javascript
 var form = document.getElementById('form');
