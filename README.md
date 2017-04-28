@@ -5,8 +5,8 @@
 Contents
 --------
 [Installation](#installation)  
-[Available Options](#options)  
-[Available Rules](#rules)  
+[Available Options](#available-options)  
+[Available Rules](#available-rules)  
 [Usage](#usage)  
 [Examples](#examples)  
 [Adding Custom Rules](#rules)  
@@ -14,6 +14,7 @@ Contents
 
 
 ### Installation
+
 **Installing using npm**  
  1. Install using ```npm install --```  
  2. Require `dist/app.js` using webpack or gulp.
@@ -27,6 +28,31 @@ After installing via npm dist/whistle.js should be required using gulp or webpac
  ```javascript 
  <script src="project-dir-path/app.js"></script>
  ``` 
+
+### Available Options
+
+<table>
+    <thead>
+        <th>Option</th>
+        <th>Default</th>
+        <th>Type</th>
+        <th>Desc</th>
+    </thead>
+    <tbody>
+        <tr>
+            <td>disabled</td>
+            <td>false</td>
+            <td>bool</td>
+            <td>if true, disabled fields will also be serialized</td>
+        </tr>
+        <tr>
+            <td>empty</td>
+            <td>false</td>
+            <td>bool</td>
+            <td>if true, empty fields will also be serialized</td>
+         </tr>
+    </tbody>
+</table>
 
 ### Available rules
 
@@ -69,7 +95,10 @@ The field under validation must be a date preceding the given date.
 20130208T080910          # Short date and time up to seconds  
 20130208T0809            # Short date and time up to minutes  
 20130208T08              # Short date and time, hours only  
-example usage before:2017-02-12 
+
+example usage:  
+
+before:2017-02-12  
 ```
 
 **between:min:max**
@@ -77,7 +106,8 @@ example usage before:2017-02-12
 The field under validation must have a size between the given min and max. 
  
  ```javascript
- example usages  
+ example usages: 
+ 
  'between:file:30:38'   #file must be between 30 - 38 kilobytes   
  'between:string:15:25' #string must be length between 15 - 25 characters  
  'between:number:8:12'  #number must be number between 8 and 12
@@ -101,31 +131,6 @@ The field under validation must have a size between the given min and max.
 - required
 - size
 - url
-
-### Available Options
-
-<table>
-    <thead>
-        <th>Option</th>
-        <th>Default</th>
-        <th>Type</th>
-        <th>Desc</th>
-    </thead>
-    <tbody>
-        <tr>
-            <td>disabled</td>
-            <td>false</td>
-            <td>bool</td>
-            <td>if true, disabled fields will also be serialized</td>
-        </tr>
-        <tr>
-            <td>empty</td>
-            <td>false</td>
-            <td>bool</td>
-            <td>if true, empty fields will also be serialized</td>
-         </tr>
-    </tbody>
-</table>
 
 ### Basic Usage
 
