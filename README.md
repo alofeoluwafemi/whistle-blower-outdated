@@ -4,13 +4,13 @@
 
 Contents
 --------
-[Installation](#installation)  
-[Available Options](#available-options)  
-[Available Rules](#available-rules)  
-[Usage](#usage)  
-[Examples](#examples)  
-[Adding Custom Rules](#rules)  
-[Contribute](#contribute)  
+* [Installation](#installation)  
+* [Available Options](#available-options)  
+* [Available Rules](#available-rules)  
+* [Usage](#usage)  
+* [Examples](#examples)  
+* [Adding Custom Rules](#rules)  
+* [Contribute](#contribute)  
 
 
 ### Installation
