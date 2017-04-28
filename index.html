@@ -5,8 +5,9 @@
     <title></title>
 </head>
 <body>
-<form action="" id="form">
-    <input type="text" name="username" value="oluwaslim" placeholder="username">
+<form action="" id="form" enctype="multipart/form-data">
+    <input type="text" name="username" value="2017-01-11" placeholder="username">
+    <input type="file" name="upload">
     <br>
     <input type="password" name="password" value="password_" placeholder="password">
     <br>
@@ -37,8 +38,9 @@
         e.preventDefault();
 
         var rules = {
-            username: ['required','before:9234561'],
-            password: ['required']
+            username: ['required','before:2017-01-12'],
+            password: ['required'],
+            upload  : ['between:file:30:38']
         };
 
 //        var messages = {'username:required': 'Is a required field'};

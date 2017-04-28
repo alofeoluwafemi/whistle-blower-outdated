@@ -5,6 +5,13 @@ export default
     alpha_dash  : 'The {attribute} may only contain letters, numbers, and dashes.',
     alpha_num   : 'The {attribute} may only contain letters and numbers.',
     alpha_space : 'The {attribute} may only contain letters and spaces.',
-    'before'    : 'The {attribute} must be a date before {date}.',
+    before      : 'The {attribute} must be a date before {date}.',
+    between     :
+    {
+        file    : 'The {attribute} must be between {min} and {max} kilobytes.',
+        numeric : 'The {attribute} must be between {min} and {max}.',
+        string  : 'The {attribute} must be between {min} and {max} characters.',
+        array   : 'The {attribute} must have between {min} and {max} items.'
+    },
     required    : 'The {attribute} field is required'
 }

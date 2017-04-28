@@ -32,6 +32,14 @@ import {convert$ObjAsJson,deduceOriginalRule,aggregateRulesAndParams} from "./he
         return new whistle(culprit,options)
     };
 
+    _w.version = '1.0.0';
+
+    /**
+     * Field under validation
+     * @type {string}
+     */
+    _w.validating = '';
+
     /**
      * Reference to the whistle object
      * @param culprit
@@ -45,7 +53,8 @@ import {convert$ObjAsJson,deduceOriginalRule,aggregateRulesAndParams} from "./he
 
         if(arguments.length > 0)
         {
-            type = toString.call(culprit);
+            _.culprit       = culprit;
+            _.culpritType   = type = toString.call(culprit);
 
             if (culprit instanceof _w) return culprit;
 
@@ -90,7 +99,8 @@ import {convert$ObjAsJson,deduceOriginalRule,aggregateRulesAndParams} from "./he
     {
         //Empty errors from previous
         //validation
-        errors = {};
+        errors      = {};
+        messages    = {};
 
         _.extend(userMsgs,msgs);
 
@@ -124,7 +134,8 @@ import {convert$ObjAsJson,deduceOriginalRule,aggregateRulesAndParams} from "./he
             }
         });
 
-        console.log(errors,messages);
+        console.log(inputs);
+        console.log(messages);
     }
 
     /**
@@ -135,6 +146,9 @@ import {convert$ObjAsJson,deduceOriginalRule,aggregateRulesAndParams} from "./he
     function performValidation(rule,field)
     {
         var value,passed,computed,params;
+
+        //Set field under validation
+        _w.validating = field;
 
         //Check if field under validation exist
         if(_.isUndefined(inputs[field])) inputs[field] = "";
@@ -184,7 +198,7 @@ import {convert$ObjAsJson,deduceOriginalRule,aggregateRulesAndParams} from "./he
      */
     function applyMessages(field,rule)
     {
-        var computed,params,msgIdentifier,message,param;
+        var computed,params,msgIdentifier,message,param,nested;
 
         computed    = deduceOriginalRule(rule);
         params      = aggregateRulesAndParams(rule);
@@ -198,11 +212,32 @@ import {convert$ObjAsJson,deduceOriginalRule,aggregateRulesAndParams} from "./he
             ? (_.isEmpty(validationMsgs[computed]) ? computed : validationMsgs[computed])
             : userMsgs[msgIdentifier];
 
+        if(_.isObject(message))
+        {
+            var f,t;
+
+            //Swap field and value in params array
+            //If validation message is an object
+            f = params[0];
+            t = params[1];
+
+            params[0] = t;
+            params[1] = f;
+        }
+
         //Substitute place holders in error messages
         //with actual values
         for(param in params)
         {
-            message = message.replace(/({[a-z]+})/,params[param]);
+            //Check if nested messages are available else
+            //we just simply match it
+            if(_.isObject(message))
+            {
+                message = message[params[param]];
+            }else
+            {
+                message = message.replace(/({[a-z]+})/,params[param]);
+            }
         }
 
         if(!_.isEmpty(messages[field])) messages[field].push(message);
