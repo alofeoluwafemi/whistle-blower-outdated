@@ -80,8 +80,9 @@ The field under validation must be entirely alpha and space. Good for validating
 
 **before:date**  
 
-The field under validation must be a date preceding the given date.
- Date allows any of the below date format
+The field under validation must be a date preceding the given date.  
+
+Any of the below date format
   
 ```javascript
 2013-02-08T09            # An hour time part separated by a T  
@@ -110,37 +111,118 @@ The field under validation must have a size between the given min and max.
  
  'between:file:30:38'   #file must be between 30 - 38 kilobytes   
  'between:string:15:25' #string must be length between 15 - 25 characters  
- 'between:number:8:12'  #number must be number between 8 and 12
+ 'between:numeric:8:12'  #number must be number between 8 and 12
  ```
 
 **confirmed**
 
 
-**contains**
+**contains:a,b**
+The field under validation must be included in the given list of values.Usually suitable for array fields.  
+
+```javascript
+ example usage: 
+ 
+ 'payment_methods:payoneer:direct'  
+ ```
+
+**date**
+
+The field under validation must be a valid date.  
+
+Accept formats from any of the given formats as before validation rule
+
+**email**
+
+The field under validation must be formatted as an e-mail address.
+
+**equal:field**  
+
+Field under validation must have a value equal to the given field 
 
 
-- date
-- email
-- equal
-- file
-- max
-- min
-- not_equal
-- numeric
-- regex
-- required
-- size
-- url
+**file**  
+
+Field under validation must have a valid uploaded file
+
+
+**max**
+
+The field under validation must not be less than min 
+ 
+ ```javascript
+ example usages: 
+ 
+ 'min:file:30'   	#file must not be less than 30 kilobytes   
+ 'min:string:15' 	#string length must not be less than 15 characters  
+ 'min:numeric:8:'  	#number must not be less than 8
+ ```
+
+**min**
+
+The field under validation must not be greater than max.  
+
+Example usage same as min.  
+
+**not_contains**
+The field under validation must not be included in the given list of values.Usually suitable for array fields.  
+
+```javascript
+ example usage: 
+ 
+ 'payment_methods:paypal:cheque'  
+ ```
+
+**numeric**  
+
+The field under validation must be numeric.
+
+
+**regex:pattern**  
+
+The field under validation must match the given regular expression.
+
+
+**required**  
+
+The field under validation must not be empty.  
+
+A field is considered "empty" if one of the following conditions are true:  
+
+1. The value is null.  
+2. The value is an empty string.  
+3. The value is an empty array (fields that are array).
+
+**size**
+
+
+**url**  
+
+The field under validation must be a valid URL.
+
 
 ### Basic Usage
 
 ```javascript
+var rules = {  
+            start: ['required','before:2017-01-12'],  
+            password: ['required'],  
+            upload  : ['between:file:30:38']  
+        };  
+
+var messages = {
+				'start:required': 'is a required field',
+				'upload:between': 'kindly upload the correct file size'
+                };  
+                
 _w(form,options).validate(rules,messages).then(function(data)  
 {  
-    //Do whatever (validation passed)  
-}).catch(function(error)  
+	//Validation passes
+    //Do whatever
+}).catch(function(errors)  
 {  
-    console.log(error);  
+	//Validation fails
+    console.log(errors);  
 })
 ```
 
@@ -157,7 +239,17 @@ var form = document.getElementById('form');
             username: ['required','alpha_dash','before:2017-02-17'],
             password: ['required','alpha_num','alpha_space'],
         };  
-        _w(form,{disabled: true}).validate(rules);  
-        return false;  
+         
+        _w(form,{disabled: true}).validate(rules,messages).then(function(data)  
+        {  
+        	//Validation passes
+            //Do whatever
+        }).catch(function(errors)  
+        {  
+        	//Validation fails
+            console.log(errors);  
+        });
+        
+        return false;
     });
 ```

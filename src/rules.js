@@ -94,7 +94,7 @@ export default
 
                 return !(fileSize < min || fileSize > max);
                 break;
-            case 'number':
+            case 'numeric':
                 number = value;
 
                 return !(number < min || fileSize > max);
