@@ -17250,14 +17250,14 @@ function aggregateRulesAndParams(rule)
 
                 if(__WEBPACK_IMPORTED_MODULE_0_underscore___default.a.isUndefined(file) || __WEBPACK_IMPORTED_MODULE_0_underscore___default.a.isUndefined(file[0])) return false;
 
-                fileSize = file[0].size; console.log(fileSize);
+                fileSize = file[0].size;
 
                 //Convert to approximate kb size
                 fileSize = Math.ceil(fileSize / 1024);
 
                 return !(fileSize < min || fileSize > max);
                 break;
-            case 'number':
+            case 'numeric':
                 number = value;
 
                 return !(number < min || fileSize > max);

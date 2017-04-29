@@ -7,9 +7,9 @@ Contents
 * [Installation](#installation)  
 * [Available Options](#available-options)  
 * [Available Rules](#available-rules)  
-* [Usage](#usage)  
-* [Examples](#examples)  
-* [Adding Custom Rules](#rules)  
+* [Basic Usage](#basic-usage)  
+* [Examples](#example-usage)  
+* [Adding Custom Rules](#adding-custom-rules)  
 * [Contribute](#contribute)  
 
 
@@ -116,6 +116,8 @@ The field under validation must have a size between the given min and max.
 
 **confirmed**
 
+The field under validation must have a matching field of foo_confirmation.  
+For example, if the field under validation is password, a matching password_confirmation field must be present in the input.
 
 **contains:a,b**
 The field under validation must be included in the given list of values.Usually suitable for array fields.  
@@ -195,6 +197,10 @@ A field is considered "empty" if one of the following conditions are true:
 
 **size**
 
+The field under validation must have a size matching the given value.  
+For string data, value corresponds to the number of characters.  
+For numeric data, value corresponds to a given integer value.  
+For files, size corresponds to the file size in kilobytes.
 
 **url**  
 
@@ -225,6 +231,7 @@ _w(form,options).validate(rules,messages).then(function(data)
     console.log(errors);  
 })
 ```
+#### Adding Custom Rules
 
 ### Example Usage
  

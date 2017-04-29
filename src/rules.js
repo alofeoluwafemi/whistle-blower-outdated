@@ -87,7 +87,7 @@ export default
 
                 if(_.isUndefined(file) || _.isUndefined(file[0])) return false;
 
-                fileSize = file[0].size; console.log(fileSize);
+                fileSize = file[0].size;
 
                 //Convert to approximate kb size
                 fileSize = Math.ceil(fileSize / 1024);
