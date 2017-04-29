@@ -29,7 +29,7 @@ import {convert$ObjAsJson,deduceOriginalRule,aggregateRulesAndParams} from "./he
     {
         options = options || {};
 
-        return new whistle(culprit,options)
+        return new whistle(culprit,options);
     };
 
     _w.version = '1.0.0';
@@ -39,6 +39,10 @@ import {convert$ObjAsJson,deduceOriginalRule,aggregateRulesAndParams} from "./he
      * @type {string}
      */
     _w.validating = '';
+
+    _w.rules       = rules;
+
+    _w.messages    = messages;
 
     /**
      * Reference to the whistle object
@@ -71,6 +75,8 @@ import {convert$ObjAsJson,deduceOriginalRule,aggregateRulesAndParams} from "./he
                 console.error('#sad# Cannot handle type of form ', type, ' passed to whistler');
             }
 
+            _w.inputs = inputs;
+
             return _w;
         }
 
@@ -88,8 +94,8 @@ import {convert$ObjAsJson,deduceOriginalRule,aggregateRulesAndParams} from "./he
      */
     _w.extend = function(identifier,method,message)
     {
-        rules[identifier]       = method;
-        messages[identifier]    = message;
+        _.extend(_w.rules,{identifier : method});
+        _.extend(_w.messages,{identifier : message});
     };
 
     //Export to Window Object
