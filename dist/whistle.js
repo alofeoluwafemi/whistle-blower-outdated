@@ -16376,10 +16376,16 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
      * @param method
      * @param message
      */
-    _w.extend = function(identifier,method,message)
+    _w.extend = function(methods,messages)
     {
-        __WEBPACK_IMPORTED_MODULE_1_underscore___default.a.extend(_w.rules,{identifier : method});
-        __WEBPACK_IMPORTED_MODULE_1_underscore___default.a.extend(_w.messages,{identifier : message});
+        console.log(messages);
+
+        __WEBPACK_IMPORTED_MODULE_1_underscore___default.a.extend(__WEBPACK_IMPORTED_MODULE_2__rules__["a" /* default */],methods);
+        __WEBPACK_IMPORTED_MODULE_1_underscore___default.a.extend(userMsgs,messages);
+
+        console.log(userMsgs);
+        console.log(__WEBPACK_IMPORTED_MODULE_3__messages__["a" /* default */]);
+        return this;
     };
 
     //Export to Window Object
@@ -16402,6 +16408,17 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
         }
 
         loopRules(rules);
+
+        return new Promise(function(resolve,reject)
+        {
+            if(__WEBPACK_IMPORTED_MODULE_1_underscore___default.a.isEmpty(errors))
+            {
+                resolve(true);
+            }else
+            {
+                reject({errors: errors, messages: messages,size: errors.length});
+            }
+        });
     };
 
     /**
@@ -16423,9 +16440,6 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
                 performValidation(rule,field);
             }
         });
-
-        console.log(inputs);
-        console.log(messages);
     }
 
     /**
@@ -16488,7 +16502,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
      */
     function applyMessages(field,rule)
     {
-        var computed,params,msgIdentifier,message,param,nested;
+        var computed,params,msgIdentifier,message,param;
 
         computed    = __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_4__helper__["b" /* deduceOriginalRule */])(rule);
         params      = __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_4__helper__["c" /* aggregateRulesAndParams */])(rule);
@@ -16496,11 +16510,9 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
         //Append field to message
         params.unshift(field);
 
-        msgIdentifier = field + ':' + computed;
-
-        message     = __WEBPACK_IMPORTED_MODULE_1_underscore___default.a.isEmpty(userMsgs[msgIdentifier])
+        message     = __WEBPACK_IMPORTED_MODULE_1_underscore___default.a.isEmpty(userMsgs[computed])
             ? (__WEBPACK_IMPORTED_MODULE_1_underscore___default.a.isEmpty(__WEBPACK_IMPORTED_MODULE_3__messages__["a" /* default */][computed]) ? computed : __WEBPACK_IMPORTED_MODULE_3__messages__["a" /* default */][computed])
-            : userMsgs[msgIdentifier];
+            : userMsgs[computed];
 
         if(__WEBPACK_IMPORTED_MODULE_1_underscore___default.a.isObject(message))
         {

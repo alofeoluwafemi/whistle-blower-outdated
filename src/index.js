@@ -92,10 +92,16 @@ import {convert$ObjAsJson,deduceOriginalRule,aggregateRulesAndParams} from "./he
      * @param method
      * @param message
      */
-    _w.extend = function(identifier,method,message)
+    _w.extend = function(methods,messages)
     {
-        _.extend(_w.rules,{identifier : method});
-        _.extend(_w.messages,{identifier : message});
+        console.log(messages);
+
+        _.extend(rules,methods);
+        _.extend(userMsgs,messages);
+
+        console.log(userMsgs);
+        console.log(validationMsgs);
+        return this;
     };
 
     //Export to Window Object
@@ -118,6 +124,17 @@ import {convert$ObjAsJson,deduceOriginalRule,aggregateRulesAndParams} from "./he
         }
 
         loopRules(rules);
+
+        return new Promise(function(resolve,reject)
+        {
+            if(_.isEmpty(errors))
+            {
+                resolve(true);
+            }else
+            {
+                reject({errors: errors, messages: messages,size: errors.length});
+            }
+        });
     };
 
     /**
@@ -139,9 +156,6 @@ import {convert$ObjAsJson,deduceOriginalRule,aggregateRulesAndParams} from "./he
                 performValidation(rule,field);
             }
         });
-
-        console.log(inputs);
-        console.log(messages);
     }
 
     /**
@@ -204,7 +218,7 @@ import {convert$ObjAsJson,deduceOriginalRule,aggregateRulesAndParams} from "./he
      */
     function applyMessages(field,rule)
     {
-        var computed,params,msgIdentifier,message,param,nested;
+        var computed,params,msgIdentifier,message,param;
 
         computed    = deduceOriginalRule(rule);
         params      = aggregateRulesAndParams(rule);
@@ -212,11 +226,9 @@ import {convert$ObjAsJson,deduceOriginalRule,aggregateRulesAndParams} from "./he
         //Append field to message
         params.unshift(field);
 
-        msgIdentifier = field + ':' + computed;
-
-        message     = _.isEmpty(userMsgs[msgIdentifier])
+        message     = _.isEmpty(userMsgs[computed])
             ? (_.isEmpty(validationMsgs[computed]) ? computed : validationMsgs[computed])
-            : userMsgs[msgIdentifier];
+            : userMsgs[computed];
 
         if(_.isObject(message))
         {

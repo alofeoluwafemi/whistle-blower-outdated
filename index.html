@@ -14,6 +14,8 @@
     <br>
     <input type="text" name="url" value="http://www.google.com" placeholder="url">
     <br>
+    <input type="text" name="mime" value="application/pdf" placeholder="url">
+    <br>
     <input type="file" name="upload">
     <br>
     <input type="password" name="password" value="password_" placeholder="password">
@@ -53,7 +55,31 @@
 
     form.addEventListener('submit',function(e)
     {
+        var messages,options,customRules,customMessages;
+
         e.preventDefault();
+
+        /**
+         * Validate if value is a valid mime
+         *
+         * @param value
+         * @param mime
+         * @returns {boolean}
+         */
+        customRules =
+        {
+            mime : function(value,mime)
+            {
+                var type = ['audio/aac','application/x-abiword','text/css','text/csv'];
+
+                return !(type.indexOf(value) == -1);    //return true if validation passes or false otherwise
+            }
+        };
+
+        customMessages =
+        {
+            mime: 'The {attribute} must be a valid mime type'
+        };
 
         var rules = {
             date            : ['required','before:2017-01-12','date'],
@@ -62,15 +88,30 @@
             upload          : ['max:file:25'],
             payment_method  : ['required','contains:payoneer','not_contains:direct'],
             slug            : ['required','regex:^[a-zA-Z\-]+$'],
-            url             : ['required','url']
+            url             : ['required','url'],
+            mime            : ['required','mime']
         };
 
-        var messages = {'username:required': 'Is a required field'};
+        messages = {'username:required': 'username must be provided'};
 
-        _w(form,{disabled: true}).validate(rules,messages);
+        options  = {disabled: true};
+
+        _w(form,options)
+                .extend(customRules,customMessages)
+                .validate(rules,messages)
+                .then(function(passed)
+                {
+                    //Validation passes
+                    //Do whatever
+                }).catch(function(errors)
+                {
+                    //Validation fails
+                    console.log(errors);
+                });
 
         return false;
     });
+
 
     //    var form = $('#form');
     //

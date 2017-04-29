@@ -127,7 +127,7 @@ The field under validation must contain the given list of values.Usually suitabl
 **date**  
 The field under validation must be a valid date.  
 
-Accept formats from any of the given formats as [**before**](#before:date) validation rule
+Accept formats from any of the given formats as [before](#before:date) validation rule
 
 **email**  
 The field under validation must be formatted as an e-mail address.
@@ -234,7 +234,6 @@ _w(form,options).validate(rules,messages).then(function(data)
     console.log(errors);  
 })
 ```
-#### Adding Custom Rules
 
 ### Example Usage
  
@@ -263,3 +262,63 @@ var form = document.getElementById('form');
         return false;
     });
 ```
+
+### Adding Custom Rules
+
+Here we would create a simple validation rule to check if the value of a field is a valid mime type. *whistle-blower.js* provides a convinient way to do this.
+
+```javascript
+		/**
+         * Validate if value is a valid mime
+         *
+         * @param value
+         * @param mime
+         * @returns {boolean}
+         */
+        customRules =
+        {
+            mime : function(value,mime)
+            {
+                var type = ['audio/aac','application/x-abiword','text/css','text/csv'];
+
+                return !(type.indexOf(value) == -1);    //return true if validation passes or false otherwise
+            }
+        };
+
+        customMessages =
+        {
+            mime: 'The {attribute} must be a valid mime type'
+        };
+```
+
+Then we can use it like below:
+
+```javascript
+var rules = 
+{
+  mime : ['required','mime']
+};
+
+_w(form)
+       .extend(customRules,customMessages)
+       .validate(rules,messages)
+       .then(function(passed)
+            {
+                //Validation passes
+                //Do whatever
+            }).catch(function(errors)
+            {
+                //Validation fails
+                console.log(errors);
+            });
+
+  
+        return false;
+    });
+```
+
+**NB:** Several rules can be added at once, order of precedence for adding rule and messages does not matter.
+
+### Contribute
+
+We would love for you to contribute and hear from you, and would appreciate :+1: if you share this repo. 
