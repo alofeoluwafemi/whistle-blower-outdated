@@ -18,7 +18,7 @@ Contents
 ### Installation
 
 **Installing using npm**  
- 1. Install using ```npm install --```  
+ 1. Install using ```npm install --save whistle-blower```  
  2. Require `dist/whistle.js` using webpack or gulp.
 
 **Build (compressed)**    
