@@ -88,19 +88,14 @@ import {convert$ObjAsJson,deduceOriginalRule,aggregateRulesAndParams} from "./he
      * Extend own property
      * Allows to add custom validation methods
      *
-     * @param identifier
-     * @param method
-     * @param message
+     * @param methods
+     * @param messages
      */
     _w.extend = function(methods,messages)
     {
-        console.log(messages);
-
         _.extend(rules,methods);
         _.extend(userMsgs,messages);
 
-        console.log(userMsgs);
-        console.log(validationMsgs);
         return this;
     };
 
@@ -132,7 +127,7 @@ import {convert$ObjAsJson,deduceOriginalRule,aggregateRulesAndParams} from "./he
                 resolve(true);
             }else
             {
-                reject({errors: errors, messages: messages,size: errors.length});
+                reject({errors: errors, messages: messages,size: _.size(errors)});
             }
         });
     };

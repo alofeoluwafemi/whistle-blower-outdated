@@ -19,8 +19,15 @@ Contents
 
 **Installing using npm**  
  1. Install using ```npm install --save whistle-blower```  
- 2. Require `dist/whistle.js` using webpack or gulp.
+ 2. Include library using webpack or gulp.  
+ 3. Require whistle-blower.js in your code `require("whistle-blower")`;
 
+**NB: laravel 5.4** in your webpack.mix.js file simply do  
+ ```javascript
+ mix.js(['resources/assets/js/app.js',], 'public/js').extract(['whistle-blower']);`
+ ```
+ The `_w` object becomes available to you globally.
+     
 **Build (compressed)**    
  1. Download and unzip the repository.  
  2. Copy dist/whistle.js into your project where your scripts are loaded, am guessing your public folder.  
@@ -317,7 +324,22 @@ _w(form)
     });
 ```
 
-**NB:** Several rules can be added at once, order of precedence for adding rule and messages does not matter.
+**NB:** Several rules can be added at once, order of precedence for adding rule and messages does not matter.Likewise the param passed to the validation rule function would be in the order of value and option passed to rule separated by `:`.  
+
+```javascript
+//Example 
+{rule : 'mime:param1:param2'}
+
+//Your function would receive
+mime : function(value,param1,param2)
+```
+
+Your validation message would have access to the following in order of precedence; field name,param1,param2
+
+```javascript
+//Example
+{mime: 'The {field name} must be a valid mime type but {param1} and {param2} supplied instead'}
+```
 
 ### Contribute
 
