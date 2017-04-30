@@ -17280,7 +17280,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
     _w.extend = function(methods,messages)
     {
         __WEBPACK_IMPORTED_MODULE_1_underscore___default.a.extend(__WEBPACK_IMPORTED_MODULE_2__rules__["a" /* default */],methods);
-        __WEBPACK_IMPORTED_MODULE_1_underscore___default.a.extend(userMsgs,messages);
+        __WEBPACK_IMPORTED_MODULE_1_underscore___default.a.extend(__WEBPACK_IMPORTED_MODULE_3__messages__["a" /* default */],messages);
 
         return this;
     };
@@ -17407,9 +17407,11 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
         //Append field to message
         params.unshift(field);
 
-        message     = __WEBPACK_IMPORTED_MODULE_1_underscore___default.a.isEmpty(userMsgs[computed])
+        msgIdentifier = field + ':' + computed;
+
+        message     = __WEBPACK_IMPORTED_MODULE_1_underscore___default.a.isEmpty(userMsgs[msgIdentifier])
             ? (__WEBPACK_IMPORTED_MODULE_1_underscore___default.a.isEmpty(__WEBPACK_IMPORTED_MODULE_3__messages__["a" /* default */][computed]) ? computed : __WEBPACK_IMPORTED_MODULE_3__messages__["a" /* default */][computed])
-            : userMsgs[computed];
+            : userMsgs[msgIdentifier];
 
         if(__WEBPACK_IMPORTED_MODULE_1_underscore___default.a.isObject(message))
         {

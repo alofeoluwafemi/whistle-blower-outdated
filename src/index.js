@@ -94,7 +94,7 @@ import {convert$ObjAsJson,deduceOriginalRule,aggregateRulesAndParams} from "./he
     _w.extend = function(methods,messages)
     {
         _.extend(rules,methods);
-        _.extend(userMsgs,messages);
+        _.extend(validationMsgs,messages);
 
         return this;
     };
@@ -221,9 +221,11 @@ import {convert$ObjAsJson,deduceOriginalRule,aggregateRulesAndParams} from "./he
         //Append field to message
         params.unshift(field);
 
-        message     = _.isEmpty(userMsgs[computed])
+        msgIdentifier = field + ':' + computed;
+
+        message     = _.isEmpty(userMsgs[msgIdentifier])
             ? (_.isEmpty(validationMsgs[computed]) ? computed : validationMsgs[computed])
-            : userMsgs[computed];
+            : userMsgs[msgIdentifier];
 
         if(_.isObject(message))
         {
