@@ -246,16 +246,63 @@ _w(form,options).validate(rules,messages).then(function(data)
  
 #### Example I
 
+```
+<form action="" id="form" enctype="multipart/form-data">
+    <input type="text" name="username" value="oluwaslim" placeholder="username">
+    <br>
+    <input type="text" name="date" value="2017-01-11" placeholder="date">
+    <br>
+    <input type="text" name="slug" value="post-on-next" placeholder="url slug">
+    <br>
+    <input type="text" name="url" value="http://www.google.com" placeholder="url">
+    <br>
+    <input type="text" name="mime" value="application/pdf" placeholder="url">
+    <br>
+    <input type="file" name="upload">
+    <br>
+    <input type="password" name="password" value="password_" placeholder="password">
+    <br>
+    <input type="password" name="password_confirmation" value="password_" placeholder="confirm password">
+    <br>
+    <fieldset>
+        <label for="ch1">Direct</label>
+        <input type="checkbox" name="payment_method[]" value="direct" id="ch1">
+        <br>
+        <label for="ch2">Paypal</label>
+        <input type="checkbox" name="payment_method[]" value="paypal" checked="checked" id="ch2">
+        <br>
+        <label for="ch4">Payoneer</label>
+        <input type="checkbox" name="payment_method[]" value="payoneer" checked="checked" id="ch4">
+        <br>
+        <label for="ch3">Cheque</label>
+        <input type="checkbox" name="payment_method[]" value="cheque" checked="checked" id="ch3">
+    </fieldset>
+    <br>
+    <select multiple style="width:auto">
+        <option selected value="a">Option A</option>
+        <option selected value="b">Option B</option>
+        <option selected value="c">Option C</option>
+    </select>
+    <br>
+    <button type="submit">Validate</button>
+</form>
+```
+
 ```javascript
 var form = document.getElementById('form');  
     form.addEventListener('submit',function(e)
     {  
         e.preventDefault();  
-        var rules = {
-            username: ['required','alpha_dash','before:2017-02-17'],
-            password: ['required','alpha_num','alpha_space'],
-        };  
-         
+         var rules = {
+                    date            : ['required','before:2017-01-12','date'],
+                    username        : ['required','alpha_space'],
+                    password        : ['required','confirmed'],
+                    upload          : ['max:file:25'],
+                    payment_method  : ['required','contains:payoneer','not_contains:direct'],
+                    slug            : ['required','regex:^[a-zA-Z\-]+$'],
+                    url             : ['required','url']
+                };  
+         var messages = {'username:required': 'username must be provided'}; 
         _w(form,{disabled: true}).validate(rules,messages).then(function(data)  
         {  
         	//Validation passes
