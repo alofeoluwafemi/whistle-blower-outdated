@@ -63,7 +63,7 @@ Contents
 
 ### Available rules
 
-There a suite of default validation rules which you can take advantage of, to validate string,number,array,url,email,file and more.  
+There a suite of default validation rules which you can take advantage of, to validate string,number,array,url,email,file and more. whistle-blower.js uses the name attributes of elements from the form passed to it to select fields to validate.  
 
 >*whistle-blower.js* also provides a way for developer to extend and add custom **validation rule** and **message**, this will be discussed shortly.
 
@@ -218,6 +218,8 @@ The field under validation must be a valid URL.
 
 
 ### Basic Usage
+
+whistle-blower.js uses the name attributes to select fields to validate.
 
 ```javascript
 var rules = {  

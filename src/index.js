@@ -260,4 +260,4 @@ import {convert$ObjAsJson,deduceOriginalRule,aggregateRulesAndParams} from "./he
         if(_.isEmpty(messages[field])) messages[field] = [message];
     }
 
-}.call(window));
+}.call(global));
