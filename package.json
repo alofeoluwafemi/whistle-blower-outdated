@@ -1,6 +1,6 @@
 {
   "name": "whistle-blower",
-  "version": "1.0.3",
+  "version": "1.0.4",
   "description": "A Simple Javascript Validation Library",
   "main": "dist/whistle.js",
   "repository": "https://github.com/slim12kg/whistle-blower.git",
