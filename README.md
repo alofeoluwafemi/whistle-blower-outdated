@@ -293,6 +293,7 @@ var form = document.getElementById('form');
     form.addEventListener('submit',function(e)
     {  
         e.preventDefault();  
+        
          var rules = {
                     date            : ['required','before:2017-01-12','date'],
                     username        : ['required','alpha_space'],
@@ -302,7 +303,9 @@ var form = document.getElementById('form');
                     slug            : ['required','regex:^[a-zA-Z\-]+$'],
                     url             : ['required','url']
                 };  
+                
          var messages = {'username:required': 'username must be provided'}; 
+         
         _w(form,{disabled: true}).validate(rules,messages).then(function(data)  
         {  
         	//Validation passes
