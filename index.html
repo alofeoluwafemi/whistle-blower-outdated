@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title></title>
+</head>
+<body>
+<form action="" id="form" enctype="multipart/form-data">
+    <input type="text" name="username" value="oluwaslim" placeholder="username">
+    <br>
+    <input type="text" name="date" value="2017-01-11" placeholder="date">
+    <br>
+    <input type="text" name="slug" value="post-on-next" placeholder="url slug">
+    <br>
+    <input type="text" name="url" value="http://www.google.com" placeholder="url">
+    <br>
+    <input type="text" name="mime" value="application/pdf" placeholder="url">
+    <br>
+    <input type="file" name="upload">
+    <br>
+    <input type="password" name="password" value="password_" placeholder="password">
+    <br>
+    <input type="password" name="password_confirmation" value="password_" placeholder="confirm password">
+    <br>
+    <fieldset>
+        <label for="ch1">Direct</label>
+        <input type="checkbox" name="payment_method[]" value="direct" id="ch1">
+        <br>
+        <label for="ch2">Paypal</label>
+        <input type="checkbox" name="payment_method[]" value="paypal" checked="checked" id="ch2">
+        <br>
+        <label for="ch4">Payoneer</label>
+        <input type="checkbox" name="payment_method[]" value="payoneer" checked="checked" id="ch4">
+        <br>
+        <label for="ch3">Cheque</label>
+        <input type="checkbox" name="payment_method[]" value="cheque" checked="checked" id="ch3">
+    </fieldset>
+    <br>
+    <select multiple style="width:auto">
+        <option selected value="a">Option A</option>
+        <option selected value="b">Option B</option>
+        <option selected value="c">Option C</option>
+    </select>
+    <br>
+    <button type="submit">Validate</button>
+</form>
+</body>
+<script src="dist/whistle.js"></script>
+<script
+        src="https://code.jquery.com/jquery-3.2.1.js"
+        integrity="sha256-DZAnKJ/6XZ9si04Hgrsxu/8s717jcIzLy3oi35EouyE="
+        crossorigin="anonymous"></script>
+<script>
+    var form = document.getElementById('form');
+
+    form.addEventListener('submit',function(e)
+    {
+        var messages,options,customRules,customMessages;
+
+        e.preventDefault();
+
+        /**
+         * Validate if value is a valid mime
+         *
+         * @param value
+         * @param mime
+         * @returns {boolean}
+         */
+        customRules =
+        {
+            mime : function(value,mime)
+            {
+                var type = ['audio/aac','application/x-abiword','text/css','text/csv'];
+
+                return !(type.indexOf(value) == -1);    //return true if validation passes or false otherwise
+            }
+        };
+
+        customMessages =
+        {
+            mime: 'The {attribute} must be a valid mime type'
+        };
+
+        var rules = {
+            date            : ['required','before:2017-01-12','date'],
+            username        : ['required','alpha_space'],
+            password        : ['required','confirmed'],
+            upload          : ['max:file:25'],
+            payment_method  : ['required','contains:payoneer','not_contains:direct'],
+            slug            : ['required','regex:^[a-zA-Z\-]+$'],
+            url             : ['required','url'],
+            mime            : ['required','mime']
+        };
+
+        messages = {'username:required': 'username must be provided'};
+
+        options  = {disabled: true};
+
+        _w(form,options)
+                .extend(customRules,customMessages)
+                .validate(rules,messages)
+                .then(function(passed)
+                {
+                    //Validation passes
+                    //Do whatever
+                }).catch(function(errors)
+                {
+                    //Validation fails
+                    console.log(errors);
+                });
+
+        return false;
+    });
+
+
+    //    var form = $('#form');
+    //
+    //    form.on('submit',function(e)
+    //    {
+    //        e.preventDefault();
+    //
+    //        var rules = {username: ['required','accepted'],'password': ['required','alpha_num']};
+    //
+    //        _w(form,{disabled: true,empty: true}).validate(rules);
+    //
+    //        return false;
+    //    })
+</script>
+</html>
