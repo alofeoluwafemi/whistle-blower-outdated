@@ -1,11 +1,12 @@
 {
   "name": "whistle-blower",
-  "version": "1.0.5",
+  "version": "1.0.6",
   "description": "A Simple Javascript Validation Library",
   "main": "dist/whistle.js",
   "repository": "https://github.com/slim12kg/whistle-blower.git",
   "scripts": {
-    "test": "mocha"
+    "test": "mocha",
+    "webpack": "webpack"
   },
   "keywords": [
     "validation",

@@ -22,7 +22,7 @@ Contents
  2. Include library using webpack or gulp.  
  3. Require whistle-blower.js in your code `require("whistle-blower")`;
 
-**NB: laravel 5.4** in your webpack.mix.js file simply do  
+**NB: laravel 5.4** in your webpack.config.js file simply do  
  ```javascript
  mix.js(['resources/assets/js/app.js',], 'public/js').extract(['whistle-blower']);`
  ```
@@ -245,6 +245,7 @@ _w(form,options).validate(rules,messages).then(function(data)
 ```
 
 ### Example Usage
+<<<<<<< HEAD
 
 #### Basic Usage
 
@@ -273,6 +274,9 @@ _w(form,options).validate(rules,messages).then(function(data)
             });
 ```
 
+=======
+ 
+>>>>>>> 0048263904e63d6f945846f0b05cdc8be59701cf
 #### Example I
 
 ```
