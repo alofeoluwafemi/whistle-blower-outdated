@@ -245,9 +245,8 @@ _w(form,options).validate(rules,messages).then(function(data)
 ```
 
 ### Example Usage
-<<<<<<< HEAD
 
-#### Basic Usage
+#### Example I
 
 ```js
  var rules,params;
@@ -273,11 +272,7 @@ _w(form,options).validate(rules,messages).then(function(data)
               console.log(errors);
             });
 ```
-
-=======
- 
->>>>>>> 0048263904e63d6f945846f0b05cdc8be59701cf
-#### Example I
+#### Example II
 
 ```
 <form action="" id="form" enctype="multipart/form-data">
